@@ -1,0 +1,62 @@
+import pandas as pd
+from sklearn.datasets import fetch_openml
+
+X,y = fetch_openml("autos", version=1, as_frame=True, return_X_y=True)
+data = X
+data['target'] = y
+data.head()
+
+
+
+data.describe(include='all')
+
+
+
+
+data.plot.scatter(x='engine-size', y='horsepower')
+
+
+
+data_summary = data[['target', 'engine-size', 'horsepower', 'price']]
+data_summary.head(10).style.format({ 
+                          "engine-size": "{:20,.0f} cc", 
+                          "horsepower": "{:20,.0f} hp",
+                          "price":"${:20,.0f}"})
+                          
+                          
+ 
+data_summary.head(10).style.format({ 
+                          "engine-size": "{:20,.0f} cc", 
+                          "horsepower": "{:20,.0f} hp",
+                          "price":"${:20,.0f}"})\
+                    .background_gradient(cmap='viridis')
+                    
+
+import numpy as np
+
+pivot_table = pd.pivot_table(data, values='horsepower', index=['num-of-cylinders'],
+                    columns=['target'], aggfunc=np.sum, fill_value=0)
+
+print(pivot_table)
+
+
+
+round(data.corr(),2)
+
+
+
+target_groups = data.groupby('target').mean()
+target_groups
+
+
+
+data_summary.head(10).style.format({ 
+                          "engine-size": "{:20,.0f} cc", 
+                          "horsepower": "{:20,.0f} hp",
+                          "price":"${:20,.0f}"})\
+                    .background_gradient(cmap='viridis')\
+                    .set_caption('First 10 Rows')
+                    
+                    
+pd.set_option("display.max_columns",100)
+pd.set_option("display.precision",2)               
